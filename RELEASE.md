@@ -46,8 +46,10 @@ This project uses GitHub Actions for automated PyPI publishing. The CI/CD pipeli
 ### Pipeline Stages
 
 1. **Test** - Runs tests across Python 3.8-3.12
-2. **Build** - Creates distribution packages
-3. **Publish** - Uploads to PyPI (only on tags)
+2. **Build** - Creates distribution packages  
+3. **Publish** - Uploads to PyPI and creates GitHub release (only on tags)
+   - Uses `--skip-existing` to avoid conflicts with existing versions
+   - Automatically creates GitHub release with distribution files
 
 ### Manual Publishing (if needed)
 
@@ -63,6 +65,19 @@ twine upload dist/*
 
 The following secrets are configured in GitHub:
 - `PYPI_API_TOKEN` - PyPI API token for publishing
+
+### Testing the Release Process
+
+Use the test workflow to validate changes without publishing:
+
+```bash
+# Trigger test workflow manually
+gh workflow run test-release.yml
+
+# Or test locally
+python -m build
+twine check dist/*
+```
 
 ### Monitoring
 
