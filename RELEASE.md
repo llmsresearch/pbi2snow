@@ -68,15 +68,14 @@ The following secrets are configured in GitHub:
 
 ### Testing the Release Process
 
-Use the test workflow to validate changes without publishing:
+Test locally before creating a tag:
 
 ```bash
-# Trigger test workflow manually
-gh workflow run test-release.yml
-
-# Or test locally
+# Test build locally
 python -m build
 twine check dist/*
+pip install dist/*.whl
+python -c "import pbi2snow; print(pbi2snow.__version__)"
 ```
 
 ### Monitoring
